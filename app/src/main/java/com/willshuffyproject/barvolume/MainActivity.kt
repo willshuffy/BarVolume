@@ -2,6 +2,7 @@ package com.willshuffyproject.barvolume
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -15,7 +16,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var btnCalculate: Button
     private lateinit var tvResult: TextView
 
-    
+    companion object{
+        private const val STATE_RESULT = "state_result"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         tvResult = findViewById(R.id.tv_result)
 
         btnCalculate.setOnClickListener(this)
+
+
+        if (savedInstanceState !=null){
+            val result = savedInstanceState.getString(STATE_RESULT)
+            tvResult.text = result
+        }
     }
 
     override fun onClick(v: View) {
@@ -65,5 +74,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_RESULT, tvResult.text.toString())
     }
 }
